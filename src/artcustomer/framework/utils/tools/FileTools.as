@@ -14,6 +14,7 @@ package artcustomer.framework.utils.tools {
 	 * @author David Massenot
 	 */
 	public class FileTools {
+		private static const SIZE_LEVELS:Array = ['octet(s)', 'Ko', 'Mo', 'Go', 'To', 'Po', 'Eo', 'Zo', 'Yo'];
 		
 		
 		/**
@@ -44,6 +45,30 @@ package artcustomer.framework.utils.tools {
 		 */
 		public static function resolveFileName(file:String):String {
 			return file.substr(0, file.lastIndexOf('.'));
+		}
+		
+		/**
+		 * Escape scale and rename file.
+		 * 
+		 * @param	file
+		 * @param	scale
+		 * @return
+		 */
+		public static function escapeScaleFromFileName(file:String, scale:Number):String {
+			if (file.indexOf('{0}') != -1) file = file.split('{0}').join(scale.toString());
+			
+			return file;
+		}
+		
+		/**
+		 * Convert bytes to String format.
+		 * 
+		 * @param	bytes
+		 * @return
+		 */
+		public static function bytesToString(bytes:Number):String {
+			var index:uint = Math.floor(Math.log(bytes) / Math.log(1024));
+			return (bytes / Math.pow(1024, index)).toFixed(2) + ' ' + SIZE_LEVELS[index];
 		}
 	}
 }

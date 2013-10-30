@@ -71,11 +71,7 @@ package artcustomer.framework.loaders.assets.medias {
 		 * Start loading. Override it !
 		 */
 		public function load():void {
-			if (_scale > 0) {
-				if (_source.indexOf('{0}') != -1) {
-					_source = _source.split('{0}').join(_scale.toString());
-				}
-			}
+			if (_scale > 0) _source = FileTools.escapeScaleFromFileName(_source, _scale);
 			
 			_file = FileTools.resolveFileInPath(_source);
 			_extension = FileTools.getExtension(_source).toLowerCase();

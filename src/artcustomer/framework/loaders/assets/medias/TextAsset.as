@@ -13,7 +13,7 @@ package artcustomer.framework.loaders.assets.medias {
 	import flash.net.URLLoader;
 	import flash.text.StyleSheet;
 	
-	import artcustomer.framework.loaders.assets.consts.AssetType;
+	import artcustomer.framework.loaders.assets.consts.*;
 	
 	
 	/**
@@ -124,11 +124,12 @@ package artcustomer.framework.loaders.assets.medias {
 		 */
 		private function handleCompleteURLLoader(e:Event):void {
 			switch (_extension) {
-				case('xml'):
+				case(AssetsExtensions.EXT_XML):
 					_data = new XML(e.target.data).*;
+					_bytes = new XML(e.target.data);
 					break;
 					
-				case('css'):
+				case(AssetsExtensions.EXT_CSS):
 					_data = new StyleSheet()
 					_data.parseCSS(e.target.data);
 					break;

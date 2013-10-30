@@ -65,9 +65,11 @@ package artcustomer.framework.engines.layers.tools.video {
 		}
 		
 		
-		/* *
+		/**
 		 * Instantiate LayerVideoMetaData.
-		 * */
+		 * 
+		 * @return
+		 */
 		public static function getInstance():LayerVideoMetaData {
 			if (!__instance) {
 				__allowInstanciation = true;

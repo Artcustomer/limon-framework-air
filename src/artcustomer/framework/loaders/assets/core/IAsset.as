@@ -19,6 +19,7 @@ package artcustomer.framework.loaders.assets.core {
 		function get group():String
 		function get file():String
 		function get type():String
+		function get scale():Number
 		function get data():*
 		function get bytes():*
 	}

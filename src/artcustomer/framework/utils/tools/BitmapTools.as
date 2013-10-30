@@ -23,7 +23,7 @@ package artcustomer.framework.utils.tools {
 		
 		
 		/**
-		 * Create and return new Bitmap that fit in bounds.
+		 * Create and return a new Bitmap that fit in bounds.
 		 * 
 		 * @param	bmpSrc
 		 * @param	bounds

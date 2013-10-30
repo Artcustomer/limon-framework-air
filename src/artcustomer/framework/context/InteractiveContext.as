@@ -15,6 +15,7 @@ package artcustomer.framework.context {
 	import flash.events.UncaughtErrorEvent;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemIdleMode;
+	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
 	import flash.system.Capabilities;
 	
@@ -22,6 +23,7 @@ package artcustomer.framework.context {
 	import artcustomer.framework.events.*;
 	import artcustomer.framework.errors.*;
 	import artcustomer.framework.utils.consts.*;
+	import artcustomer.framework.utils.tools.StageTools;
 	
 	[Event(name = "error", type = "artcustomer.framework.events.ContextErrorEvent")]
 	[Event(name = "frameworkError", type = "artcustomer.framework.events.ContextErrorEvent")]
@@ -48,6 +50,8 @@ package artcustomer.framework.context {
 		private var _fullScreenHeight:int;
 		private var _stageWidth:int;
 		private var _stageHeight:int;
+		private var _scaleFactorConfiguration:int;
+		private var _safeContentBounds:Rectangle;
 		private var _contextPosition:String;
 		private var _scaleToStage:Boolean;
 		private var _screenOrientation:String;
@@ -82,6 +86,7 @@ package artcustomer.framework.context {
 			_contextHeight = 960;
 			_contextMinWidth = 540;
 			_contextMinHeight = 960;
+			_scaleFactorConfiguration = StageTools.SCALEFACTOR_CONFIGURATION_1;
 			_contextPosition = ContextPosition.TOP_LEFT;
 			_scaleToStage = true;
 			_screenOrientation = ScreenOrientation.PORTRAIT;
@@ -385,35 +390,13 @@ package artcustomer.framework.context {
 		 * @private
 		 */
 		private function setupSize(width:int, height:int):void {
-			var minValue:Number = Math.min(width, height);
-			
 			if (_scaleToStage) {
+				var customScaleFactor:int = this.defineScaleFactor();
+				
 				_contextWidth = width;
 				_contextHeight = height;
 				
-				if (minValue < 330) {
-					_scaleFactor = 1;
-				} else if (minValue <= 480) {
-					_scaleFactor = 1.5;
-				} else if (minValue < 1536) {
-					_scaleFactor = 2;
-				} else {
-					_scaleFactor = 4;
-				}
-				
-				/*
-				if (minValue < 330) {
-					return 1;
-				} else if (minValue <= 480) {
-					return 1.5;
-				} else if (minValue < 1024) {
-					return 2;
-				} else if (minValue < 1536) {
-					return 3;
-				} else {
-					return 4;
-				}
-				*/
+				_scaleFactor = customScaleFactor > 0 ? customScaleFactor : StageTools.getScaleFactor(_contextWidth, _contextHeight, _scaleFactorConfiguration);
 			} else {
 				_scaleFactor = 1;
 			}
@@ -422,6 +405,14 @@ package artcustomer.framework.context {
 			_fullScreenHeight = this.stageReference.fullScreenHeight;
 			_stageWidth = _fullScreenWidth / _scaleFactor;
 			_stageHeight = _fullScreenHeight / _scaleFactor;
+			
+			if (!_safeContentBounds) {
+				_safeContentBounds = new Rectangle();
+				_safeContentBounds.x = 0;
+				_safeContentBounds.y = 0;
+				_safeContentBounds.width = _stageWidth;
+				_safeContentBounds.height = _stageHeight;
+			}
 			
 			if (_contextWidth >= _contextHeight) {
 				_screenOrientation = ScreenOrientation.LANDSCAPE;
@@ -452,6 +443,15 @@ package artcustomer.framework.context {
 			
 		}
 		
+		/**
+		 * Define scalefactor. Can be overrided in order to define your own ScaleFactor.
+		 * 
+		 * @see StageTools
+		 * @return
+		 */
+		protected function defineScaleFactor():Number {
+			return 0;
+		}
 		
 		/**
 		 * Setup InteractiveContext.
@@ -502,6 +502,23 @@ package artcustomer.framework.context {
 			_isDesktop = false;
 			
 			super.destroy();
+		}
+		
+		/**
+		 * Set safe content bounds.
+		 * 
+		 * @param	pX
+		 * @param	pY
+		 * @param	pWidth
+		 * @param	pHeight
+		 */
+		public function setSafeContentBounds(pX:int, pY:int, pWidth:int, pHeight:int):void {
+			if (!_safeContentBounds) _safeContentBounds = new Rectangle();
+			
+			_safeContentBounds.x = pX;
+			_safeContentBounds.y = pY;
+			_safeContentBounds.width = pWidth;
+			_safeContentBounds.height = pHeight;
 		}
 		
 		/**
@@ -702,6 +719,20 @@ package artcustomer.framework.context {
 		/**
 		 * @private
 		 */
+		public function set scaleFactorConfiguration(value:int):void {
+			_scaleFactorConfiguration = value;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get scaleFactorConfiguration():int {
+			return _scaleFactorConfiguration;
+		}
+		
+		/**
+		 * @private
+		 */
 		public function get fullScreenWidth():int {
 			return _fullScreenWidth;
 		}
@@ -725,6 +756,13 @@ package artcustomer.framework.context {
 		 */
 		public function get stageHeight():int {
 			return _stageHeight;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get safeContentBounds():Rectangle {
+			return _safeContentBounds;
 		}
 		
 		/**

@@ -10,7 +10,7 @@ package artcustomer.framework.loaders.assets.data {
 	import artcustomer.framework.loaders.assets.core.*;
 	import artcustomer.framework.loaders.assets.medias.*;
 	import artcustomer.framework.loaders.assets.resources.*;
-	import artcustomer.framework.loaders.assets.consts.AssetType;
+	import artcustomer.framework.loaders.assets.consts.*;
 	
 	
 	/**
@@ -39,11 +39,11 @@ package artcustomer.framework.loaders.assets.data {
 		private function setupFiles():void {
 			_files = new Vector.<ResourceFile>();
 			
-			_files.push(createResourceFile(ImageAsset, AssetType.IMAGE, ['jpg', 'jpeg', 'png', 'bmp', 'gif'], ['image/jpeg', 'image/jpeg', 'image/png', 'image/png', 'image/gif']));
-			_files.push(createResourceFile(SoundAsset, AssetType.SOUND, ['mp3', 'wav', 'wma'], ['audio/mpeg', 'audio/x-wav', 'audio/x-ms-wma']));
-			_files.push(createResourceFile(AnimationAsset, AssetType.ANIMATION, ['swf'], ['application/octet-stream']));
-			_files.push(createResourceFile(TextAsset, AssetType.TEXT, ['txt', 'xml', 'rss', 'html', 'css', 'js'], ['text/plain', 'text/xml', 'text/xml', 'text/html', 'text/css', 'text/javascript']));
-			_files.push(createResourceFile(Object3DAsset, AssetType.OBJECT3D, ['dae', '3ds', 'a3d', 'md5', 'md2'], ['model/x3d+xml', 'model/x3d+binary', 'model/x3d+binary', 'application/octet-stream', 'application/octet-stream']));
+			_files.push(createResourceFile(ImageAsset, AssetType.IMAGE, [AssetsExtensions.EXT_JPG, AssetsExtensions.EXT_JPEG, AssetsExtensions.EXT_PNG, AssetsExtensions.EXT_BMP, AssetsExtensions.EXT_GIF], ['image/jpeg', 'image/jpeg', 'image/png', 'image/png', 'image/gif']));
+			_files.push(createResourceFile(SoundAsset, AssetType.SOUND, [AssetsExtensions.EXT_MP3, AssetsExtensions.EXT_WAV, AssetsExtensions.EXT_WMA], ['audio/mpeg', 'audio/x-wav', 'audio/x-ms-wma']));
+			_files.push(createResourceFile(AnimationAsset, AssetType.ANIMATION, [AssetsExtensions.EXT_SWF], ['application/octet-stream']));
+			_files.push(createResourceFile(TextAsset, AssetType.TEXT, [AssetsExtensions.EXT_TXT, AssetsExtensions.EXT_XML, AssetsExtensions.EXT_RSS, AssetsExtensions.EXT_HTML, AssetsExtensions.EXT_CSS, AssetsExtensions.EXT_JS], ['text/plain', 'text/xml', 'text/xml', 'text/html', 'text/css', 'text/javascript']));
+			_files.push(createResourceFile(Object3DAsset, AssetType.OBJECT3D, [AssetsExtensions.EXT_DAE, AssetsExtensions.EXT_3DS, AssetsExtensions.EXT_A3D, AssetsExtensions.EXT_MD5, AssetsExtensions.EXT_MD2], ['model/x3d+xml', 'model/x3d+binary', 'model/x3d+binary', 'application/octet-stream', 'application/octet-stream']));
 		}
 		
 		/**
@@ -169,6 +169,7 @@ package artcustomer.framework.loaders.assets.data {
 				asset.group = loadableAsset.group;
 				asset.file = loadableAsset.file;
 				asset.type = loadableAsset.type;
+				asset.scale = loadableAsset.scale;
 				asset.data = loadableAsset.data;
 				asset.bytes = loadableAsset.bytes;
 			}

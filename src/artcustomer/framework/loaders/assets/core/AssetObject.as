@@ -21,6 +21,7 @@ package artcustomer.framework.loaders.assets.core {
 		private var _group:String;
 		private var _file:String;
 		private var _type:String;
+		private var _scale:Number;
 		private var _data:*;
 		private var _bytes:*;
 		
@@ -29,7 +30,7 @@ package artcustomer.framework.loaders.assets.core {
 		 * Constructor
 		 */
 		public function AssetObject() {
-			
+			_scale = 0;
 		}
 		
 		
@@ -42,6 +43,7 @@ package artcustomer.framework.loaders.assets.core {
 			_group = null;
 			_file = null;
 			_type = null;
+			_scale = 0;
 			_data = null;
 			_bytes = null;
 		}
@@ -125,6 +127,20 @@ package artcustomer.framework.loaders.assets.core {
 		 */
 		public function get type():String {
 			return _type;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set scale(value:Number):void {
+			_scale = value;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get scale():Number {
+			return _scale;
 		}
 		
 		/**

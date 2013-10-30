@@ -22,7 +22,6 @@ package artcustomer.framework.engines.layers {
 	import artcustomer.framework.engines.layers.tools.video.consts.*;
 	import artcustomer.framework.utils.consts.LayerErrorType;
 	
-	
 	[Event(name = "layerVideoAvailable", type = "artcustomer.framework.events.LayerVideoEvent")]
 	[Event(name = "layerVideoReady", type = "artcustomer.framework.events.LayerVideoEvent")]
 	[Event(name = "layerVideoSetup", type = "artcustomer.framework.events.LayerVideoEvent")]
@@ -416,12 +415,20 @@ package artcustomer.framework.engines.layers {
 			var videoHeight:int = _layerVideoMetaData.videoHeight;
 			
 			switch (_ratioType) {
-				case(LayerVideoRatio.SCALE_ON_STAGEWIDTH):
-					ratio = Math.min((stageWidth / videoWidth), (videoHeight / videoHeight));
+				case(VideoPlayerRatio.SCALE_ON_STAGEWIDTH):
+					if (stageWidth >= videoWidth) {
+						ratio = Math.max((stageWidth / videoWidth), (videoHeight / videoHeight));
+					} else {
+						ratio = Math.min((stageWidth / videoWidth), (videoHeight / videoHeight));
+					}
 					break;
 					
-				case(LayerVideoRatio.SCALE_ON_STAGEWIDTH):
-					ratio = Math.min((videoWidth / videoWidth), (stageHeight / videoHeight));
+				case(VideoPlayerRatio.SCALE_ON_STAGEHEIGHT):
+					if (stageHeight >= videoHeight) {
+						ratio = Math.max((videoWidth / videoWidth), (stageHeight / videoHeight));
+					} else {
+						ratio = Math.min((videoWidth / videoWidth), (stageHeight / videoHeight));
+					}
 					break;
 					
 				default:
@@ -950,6 +957,7 @@ package artcustomer.framework.engines.layers {
 				scaleViewPortOnStage();
 			} else {
 				setViewPortOnStageVideo();
+				updateViewPortPosition();
 			}
 			
 			_allowRendering = true;

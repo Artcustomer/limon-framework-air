@@ -143,6 +143,8 @@ package artcustomer.framework.context {
 			t += '\n';
 			t += 'Runtime : ' + this.runtime;
 			t += '\n';
+			t += 'Air Version : ' + this.airVersion;
+			t += '\n';
 			t += 'Flash Version : ' + this.flashVersion;
 			t += '\n';
 			t += 'Framerate : ' + this.framerate;

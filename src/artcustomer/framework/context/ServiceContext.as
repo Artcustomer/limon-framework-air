@@ -39,6 +39,7 @@ package artcustomer.framework.context {
 		private var _runtime:String;
 		private var _runtimeVersion:String;
 		private var _flashVersion:String;
+		private var _airVersion:String;
 		private var _operatingSystem:String;
 		private var _bitsProcessesSupported:String;
 		private var _cpuArchitecture:String;
@@ -63,6 +64,7 @@ package artcustomer.framework.context {
 			_runtime = RuntimePlatform.AIR_RUNTIME;
 			_runtimeVersion = NativeApplication.nativeApplication.runtimeVersion;
 			_flashVersion = Capabilities.version;
+			_airVersion = NativeApplication.nativeApplication.runtimeVersion;
 			_operatingSystem = Capabilities.os;
 			_bitsProcessesSupported = BitProcesses.UNKNOWN_SUPPORT;
 			_cpuArchitecture = Capabilities.cpuArchitecture;
@@ -192,6 +194,7 @@ package artcustomer.framework.context {
 			_runtime = null;
 			_runtimeVersion = null;
 			_flashVersion = null;
+			_airVersion = null;
 			_operatingSystem = null;
 			_cpuArchitecture = null;
 			_playerType = null;
@@ -438,6 +441,13 @@ package artcustomer.framework.context {
 		 */
 		public function get flashVersion():String {
 			return _flashVersion;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get airVersion():String {
+			return _airVersion;
 		}
 		
 		/**

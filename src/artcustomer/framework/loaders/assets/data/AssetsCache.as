@@ -157,7 +157,7 @@ package artcustomer.framework.loaders.assets.data {
 				asset = _stack[i];
 				fileName = FileTools.resolveFileName(file);
 				
-				if (asset.file.search(fileName) == 0) return asset;
+				if (asset.file == FileTools.escapeScaleFromFileName(file, asset.scale)) return asset;
 			}
 			
 			return null;

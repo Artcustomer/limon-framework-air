@@ -14,7 +14,7 @@ package artcustomer.framework.loaders.assets.medias {
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 	
-	import artcustomer.framework.loaders.assets.consts.AssetType;
+	import artcustomer.framework.loaders.assets.consts.*;
 	
 	
 	/**
@@ -152,16 +152,16 @@ package artcustomer.framework.loaders.assets.medias {
 			super.load();
 			
 			switch (_extension) {
-				case('3ds'):
-				case('a3d'):
-				case('md2'):
-				case('md5'):
+				case(AssetsExtensions.EXT_3DS):
+				case(AssetsExtensions.EXT_A3D):
+				case(AssetsExtensions.EXT_MD2):
+				case(AssetsExtensions.EXT_MD5):
 					dataformat = URLLoaderDataFormat.BINARY;
 					
 					_is3DS = true;
 					break;
 					
-				case('dae'):
+				case(AssetsExtensions.EXT_DAE):
 					dataformat = URLLoaderDataFormat.TEXT;
 					
 					_isCollada = true;

@@ -9,6 +9,7 @@ package artcustomer.framework.context {
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import flash.geom.Rectangle;
 	
 	
 	/**
@@ -31,6 +32,7 @@ package artcustomer.framework.context {
 		function get stageWidth():int;
 		function get stageHeight():int;
 		function get scaleFactor():Number
+		function get safeContentBounds():Rectangle
 		function get instance():BaseContext;
 	}
 }
