@@ -64,5 +64,33 @@ package artcustomer.framework.utils.tools {
 			
 			return true;
 		}
+		
+		/**
+		 * Add array data in destination array.
+		 * 
+		 * @param	srcArray
+		 * @param	destArray
+		 * @return
+		 */
+		public static function add(srcArray:Array, destArray:Array):Array {
+			var i:int = 0;
+			var length:int = srcArray.length;
+			
+			for (i ; i < length ; i++) {
+				destArray.push(srcArray[i]);
+			}
+			
+			return destArray;
+		}
+		
+		/**
+		 * Remove index from array.
+		 * 
+		 * @param	srcArray
+		 * @param	index
+		 */
+		public static function removeAt(srcArray:Array, index:int):void {
+			srcArray.splice(index, 1);
+		}
 	}
 }

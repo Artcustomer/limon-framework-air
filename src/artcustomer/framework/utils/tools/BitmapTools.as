@@ -8,6 +8,7 @@
 package artcustomer.framework.utils.tools {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.PixelSnapping;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	
@@ -61,6 +62,7 @@ package artcustomer.framework.utils.tools {
 		 * Resize bitmap image and return new Bitmap.
 		 * 
 		 * @param	bmpSrc
+		 * @param	maxSize
 		 * @param	ratio
 		 * @return
 		 */
@@ -86,9 +88,11 @@ package artcustomer.framework.utils.tools {
 					break;
 					
 				default:
-					factor = 1;
+					factor = Math.min(1, (maxSize / Math.max(bmpSrc.width, bmpSrc.height)));
 					break;
 			}
+			
+			bmpSrc.smoothing = true;
 			
 			width = bmpSrc.width * factor;
 			height = bmpSrc.height * factor;
@@ -102,7 +106,43 @@ package artcustomer.framework.utils.tools {
 			bitmapdata = new BitmapData(width, height, true, 0);
 			bitmapdata.draw(bmpSrc, matrix, null, null, null, true);
 			
-			return new Bitmap(bitmapdata, 'auto', true);
+			return new Bitmap(bitmapdata, PixelSnapping.ALWAYS, true);
+		}
+		
+		/**
+		 * Get thumbnail from bitmap.
+		 * 
+		 * @param	bmpSrc
+		 * @param	size
+		 * @return
+		 */
+		public static function getThumbFrom(bmpSrc:Bitmap, size:int):Bitmap {
+			if (!bmpSrc) return null;
+			
+			var thumbSize:int;
+			var height:int;
+			var nScaleX:Number;
+			var nScaleY:Number;
+			var nScale:Number;
+			var matrix:Matrix = new Matrix();
+			var bitmapdata:BitmapData;
+			var square:int = Math.min(bmpSrc.width, bmpSrc.height);
+			var factor:Number = Math.min(1, (size / square));
+			
+			bmpSrc.smoothing = true;
+			
+			thumbSize = square * factor;
+			
+			nScaleX = (thumbSize / bmpSrc.width) * 100;
+			nScaleY = (thumbSize / bmpSrc.height) * 100;
+			nScale = Math.max(nScaleY, nScaleX) / 100;
+			
+			matrix.scale(nScale, nScale);
+			
+			bitmapdata = new BitmapData(thumbSize, thumbSize, true, 0);
+			bitmapdata.draw(bmpSrc, matrix, null, null, null, true);
+			
+			return new Bitmap(bitmapdata, PixelSnapping.ALWAYS, true);
 		}
 		
 		/**

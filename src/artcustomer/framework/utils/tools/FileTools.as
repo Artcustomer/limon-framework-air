@@ -6,6 +6,13 @@
  */
 
 package artcustomer.framework.utils.tools {
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.filesystem.File;
+	import flash.filesystem.FileStream;
+	import flash.filesystem.FileMode;
+	import flash.media.MediaPromise;
+	import flash.utils.ByteArray;
 	
 	
 	/**

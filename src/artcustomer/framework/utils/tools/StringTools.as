@@ -8,6 +8,7 @@
 package artcustomer.framework.utils.tools {
 	import flash.xml.*;
 	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	
 	/**
@@ -77,6 +78,73 @@ package artcustomer.framework.utils.tools {
 			tf.htmlText = unescape(string);
 			
 			return tf.text;
+		}
+		
+		/**
+		 * Replace value in String.
+		 * 
+		 * @param	text
+		 * @param	key
+		 * @param	value
+		 * @return
+		 */
+		public static function replaceInString(text:String, key:String, value:String):String {
+			return text.split(key).join(value);
+		}
+		
+		/**
+		 * Truncate text with ellipsis.
+		 * 
+		 * @param	chars
+		 * @param	textFormat
+		 * @param	maxWidth
+		 * @return
+		 */
+		public static function truncateWithEllipsis(chars:String, textFormat:TextFormat, maxWidth:Number):String {
+			var text:String = chars;
+			var ellipsis:String = '...';
+			var i:int;
+			var textField:TextField = new TextField();
+			if (textFormat) textField.defaultTextFormat = textFormat;
+			textField.text = chars;
+			
+			if (textField.textWidth > maxWidth) {
+				for (i = text.length - 1 ; i >= 0 ; --i) {
+					if (text.charAt(i - 1) != ' ') {
+						textField.text = text.substring(0, i - 1) + ellipsis;
+					} else {
+						if (textField.textWidth < maxWidth) {
+							break;
+						}
+					}
+				}
+			}
+			
+			if (textField.text != ellipsis) return textField.text;
+			
+			return chars;
+		}
+		
+		
+		/**
+		 * Clone Textfield.
+		 * 
+		 * @param	original
+		 * @param	text
+		 * @return
+		 */
+		public static function cloneTextField(original:TextField, text:String = null):TextField {
+			var clone:TextField = new TextField();
+			
+			if (text !== null) clone.text = text;
+			clone.setTextFormat(original.getTextFormat());
+			clone.defaultTextFormat = original.getTextFormat();
+			clone.autoSize = original.autoSize;
+			clone.wordWrap = original.wordWrap;
+			clone.embedFonts = original.embedFonts;
+			clone.antiAliasType = original.antiAliasType;
+			
+			return clone;
 		}
 	}
 }
