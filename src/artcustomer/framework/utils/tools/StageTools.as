@@ -30,7 +30,7 @@ package artcustomer.framework.utils.tools {
 		 */
 		public static function getScaleFactor(width:int, height:int, configuration:int = 1):Number {
 			var minValue:Number = Math.min(width, height);
-			var scaleFactor:int;
+			var scaleFactor:Number;
 			
 			switch (configuration) {
 				case(SCALEFACTOR_CONFIGURATION_1):

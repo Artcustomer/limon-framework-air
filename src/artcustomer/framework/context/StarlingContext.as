@@ -223,8 +223,8 @@ package artcustomer.framework.context {
 		 */
 		private function setupStarling():void {
 			var viewPort:Rectangle;
-			var starlingStageWidth:Number;
-			var starlingStageHeight:Number;
+			var starlingStageWidth:int;
+			var starlingStageHeight:int;
 			
 			if (this.scaleToStage) {
 				//viewPort = _isDesktop == true ? new Rectangle(0, 0, this.stageReference.fullScreenWidth, this.stageReference.fullScreenHeight) : new Rectangle(0, 0, this.stageReference.stageWidth, this.stageReference.stageHeight);
@@ -536,9 +536,17 @@ package artcustomer.framework.context {
 			
 			t += '[[ ' + this.name + ' DEBUG CONTEXT ]]';
 			t += '\n';
+			t += 'FullScreenWidth : ' + this.stageReference.fullScreenWidth;
+			t += '\n';
+			t += 'FullScreenHeight : ' + this.stageReference.fullScreenHeight;
+			t += '\n';
 			t += 'Width : ' + this.contextWidth;
 			t += '\n';
 			t += 'Height : ' + this.contextHeight;
+			t += '\n';
+			t += 'ScaleToStage : ' + this.scaleToStage;
+			t += '\n';
+			t += 'ScaleFactor : ' + this.scaleFactor;
 			t += '\n';
 			t += 'Mode : ' + this.mode;
 			t += '\n';

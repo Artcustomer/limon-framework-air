@@ -44,8 +44,6 @@ package artcustomer.framework.context {
 		private var _contextView:DisplayObjectContainer;
 		private var _contextWidth:int;
 		private var _contextHeight:int;
-		private var _contextMinWidth:int;
-		private var _contextMinHeight:int;
 		private var _fullScreenWidth:int;
 		private var _fullScreenHeight:int;
 		private var _stageWidth:int;
@@ -84,8 +82,6 @@ package artcustomer.framework.context {
 			_contextView = null;
 			_contextWidth = 540;
 			_contextHeight = 960;
-			_contextMinWidth = 540;
-			_contextMinHeight = 960;
 			_scaleFactorConfiguration = StageTools.SCALEFACTOR_CONFIGURATION_1;
 			_contextPosition = ContextPosition.TOP_LEFT;
 			_scaleToStage = true;
@@ -184,8 +180,8 @@ package artcustomer.framework.context {
 		private function handleStage(e:Event):void {
 			if (!_contextView) return;
 			
-			var contextWidth:int = Math.max(_contextMinWidth, _contextView.stage.fullScreenWidth);
-			var contextHeight:int = Math.max(_contextMinHeight, _contextView.stage.fullScreenHeight);
+			var contextWidth:int = _contextView.stage.fullScreenWidth;
+			var contextHeight:int = _contextView.stage.fullScreenHeight;
 			
 			e.preventDefault();
 			
@@ -229,8 +225,8 @@ package artcustomer.framework.context {
 			
 			var stageWidth:int = _contextView.stage.fullScreenWidth;
 			var stageHeight:int = _contextView.stage.fullScreenHeight;
-			var contextWidth:int = Math.max(_contextMinWidth, stageWidth);
-			var contextHeight:int = Math.max(_contextMinHeight, stageHeight);
+			var contextWidth:int = stageWidth;
+			var contextHeight:int = stageHeight;
 			
 			e.preventDefault();
 			
@@ -391,7 +387,7 @@ package artcustomer.framework.context {
 		 */
 		private function setupSize(width:int, height:int):void {
 			if (_scaleToStage) {
-				var customScaleFactor:int = this.defineScaleFactor();
+				var customScaleFactor:Number = this.defineScaleFactor();
 				
 				_contextWidth = width;
 				_contextHeight = height;
@@ -485,8 +481,6 @@ package artcustomer.framework.context {
 			_contextView = null;
 			_contextWidth = 0;
 			_contextHeight = 0;
-			_contextMinWidth = 0;
-			_contextMinHeight = 0;
 			_fullScreenWidth = 0;
 			_fullScreenHeight = 0;
 			_contextPosition = null;
@@ -686,34 +680,6 @@ package artcustomer.framework.context {
 		 */
 		public function get contextHeight():int {
 			return _contextHeight;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set contextMinWidth(value:int):void {
-			_contextMinWidth = value;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function get contextMinWidth():int {
-			return _contextMinWidth;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function set contextMinHeight(value:int):void {
-			_contextMinHeight = value;
-		}
-		
-		/**
-		 * @private
-		 */
-		public function get contextMinHeight():int {
-			return _contextMinHeight;
 		}
 		
 		/**
