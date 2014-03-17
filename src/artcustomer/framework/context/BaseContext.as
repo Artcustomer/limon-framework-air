@@ -19,6 +19,7 @@ package artcustomer.framework.context {
 	import artcustomer.framework.utils.consts.*;
 	import artcustomer.framework.context.platform.render.*;
 	import artcustomer.framework.context.platform.shore.*;
+	import artcustomer.framework.debug.console.ConsoleLog;
 	
 	[Event(name = "contextSetup", type = "artcustomer.framework.events.ContextEvent")]
 	[Event(name = "contextReset", type = "artcustomer.framework.events.ContextEvent")]
@@ -35,6 +36,7 @@ package artcustomer.framework.context {
 		
 		private var _renderEngine:RenderEngine;
 		private var _shore:Shore;
+		private var _console:ConsoleLog;
 		
 		private var _isContextSetup:Boolean;
 		
@@ -132,6 +134,15 @@ package artcustomer.framework.context {
 		}
 		
 		/**
+		 * Get Debug version of Context.
+		 * 
+		 * @return
+		 */
+		public function debug():String {
+			return "Override this method !";
+		}
+		
+		/**
 		 * Get Debug version of Player.
 		 * 
 		 * @return
@@ -155,6 +166,7 @@ package artcustomer.framework.context {
 			t += '\n';
 			t += 'CPU : ' + this.cpuArchitecture;
 			t += '\n';
+			t += '[[ END DEBUG PLAYER ]]';
 			
 			return t;
 		}
@@ -181,6 +193,9 @@ package artcustomer.framework.context {
 			
 			super.setup();
 			
+			_console = ConsoleLog.getInstance();
+			_console.stageReference = this.stageReference;
+			_console.init();
 			_isContextSetup = true;
 			__currentContext = this;
 			
@@ -203,6 +218,8 @@ package artcustomer.framework.context {
 			super.destroy();
 			
 			_isContextSetup = false;
+			_console.destroy();
+			_console = null;
 			__allowInstantiation = false;
 			__currentContext = null;
 		}
@@ -215,6 +232,40 @@ package artcustomer.framework.context {
 			if (!this.contextView) throw new FrameworkError(FrameworkError.E_CONTEXT_RESET);
 			
 			this.dispatchEvent(new ContextEvent(ContextEvent.CONTEXT_RESET, true, false, this.name, this.contextWidth, this.contextHeight, this.contextView.stage.stageWidth, this.contextView.stage.stageHeight));
+		}
+		
+		/**
+		 * Start current processing (like Starling if you use StarlingContext)
+		 */
+		public function startExternalProcessing():void {
+			
+		}
+		
+		/**
+		 * Stop current processing (like Starling if you use StarlingContext)
+		 */
+		public function stopExternalProcessing():void {
+			
+		}
+		
+		/**
+		 * Show Console
+		 * 
+		 * @param	width
+		 * @param	height
+		 */
+		public function showConsole(width:int = 300, height:int = 500):void {
+			if (!_console.isAdded) {
+				_console.resize(width, height);
+				_console.add();
+			}
+		}
+		
+		/**
+		 * Hide Console
+		 */
+		public function hideConsole():void {
+			if (_console.isAdded) _console.remove();
 		}
 		
 		
@@ -259,6 +310,13 @@ package artcustomer.framework.context {
 		 */
 		public function get shore():Shore {
 			return _shore;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get console():ConsoleLog {
+			return _console;
 		}
 		
 		

@@ -36,6 +36,7 @@ package artcustomer.framework.loaders.assets.medias {
 		protected var _type:String;
 		protected var _extension:String;
 		protected var _scale:Number;
+		protected var _lang:String;
 		protected var _data:*;
 		protected var _bytes:*;
 		
@@ -72,6 +73,7 @@ package artcustomer.framework.loaders.assets.medias {
 		 */
 		public function load():void {
 			if (_scale > 0) _source = FileTools.escapeScaleFromFileName(_source, _scale);
+			if (_lang) _source = FileTools.escapeLangFromFileName(_source, _lang);
 			
 			_file = FileTools.resolveFileInPath(_source);
 			_extension = FileTools.getExtension(_source).toLowerCase();
@@ -130,6 +132,7 @@ package artcustomer.framework.loaders.assets.medias {
 			_type = null;
 			_extension = null;
 			_scale = 0;
+			_lang = null;
 			_data = null;
 			_bytes = null;
 			_bytesLoaded = 0;
@@ -197,6 +200,20 @@ package artcustomer.framework.loaders.assets.medias {
 		 */
 		public function get scale():Number {
 			return _scale;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set lang(value:String):void {
+			_lang = value;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get lang():String {
+			return _lang;
 		}
 		
 		/**

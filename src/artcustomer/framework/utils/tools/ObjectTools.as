@@ -6,6 +6,7 @@
  */
 
 package artcustomer.framework.utils.tools {
+	import flash.utils.getQualifiedClassName;
 	
 	
 	/**

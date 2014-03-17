@@ -760,7 +760,7 @@ package artcustomer.framework.context {
 		 * 
 		 * @return
 		 */
-		public function debug():String {
+		override public function debug():String {
 			var t:String = '';
 			var a:Array;
 			var o:Object;

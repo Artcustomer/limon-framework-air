@@ -25,37 +25,51 @@ package artcustomer.framework.utils.tools {
 		
 		/**
 		 * Create and return a new Bitmap that fit in bounds.
-		 * 
-		 * @param	bmpSrc
-		 * @param	bounds
+		 * @param	pBitmap
+		 * @param	pWidth
+		 * @param	pHeight
+		 * @param	pCenter
+		 * @param	pFillBox
 		 * @return
 		 */
-		public static function fit(bmpSrc:Bitmap, bounds:Rectangle):Bitmap {
-			if (!bmpSrc) return null;
-			if (!bounds) return bmpSrc;
+		public static function fit(pBitmap:Bitmap, pWidth:Number, pHeight:Number, pCenter:Boolean = true, pFillBox:Boolean = true):Bitmap {
+			var tempW:Number = pBitmap.width;
+			var tempH:Number = pBitmap.height;
 			
-			var width:int;
-			var height:int;
-			var nScaleX:Number;
-			var nScaleY:Number;
-			var nScale:Number;
-			var matrix:Matrix = new Matrix();
-			var bitmapdata:BitmapData;
-			var factor:Number = Math.max(((bounds.width) / bmpSrc.width), ((bounds.height) / bmpSrc.height));
+			pBitmap.width = pWidth;
+			pBitmap.height = pHeight;
+		 
+			var scale:Number = (pFillBox) ? Math.max(pBitmap.scaleX, pBitmap.scaleY) : Math.min(pBitmap.scaleX, pBitmap.scaleY);
+		 
+			pBitmap.width = tempW;
+			pBitmap.height = tempH;
+		 
+			var scaleBmpd:BitmapData = new BitmapData(pBitmap.width * scale, pBitmap.height * scale);
+			var scaledBitmap:Bitmap = new Bitmap(scaleBmpd, PixelSnapping.ALWAYS, true);
+			var scaleMatrix:Matrix = new Matrix();
 			
-			width = bmpSrc.width * factor;
-			height = bmpSrc.height * factor;
-			
-			nScaleX = (width / bmpSrc.width) * 100;
-			nScaleY = (height / bmpSrc.height) * 100;
-			nScale = Math.max(nScaleY, nScaleX) / 100;
-			
-			matrix.scale(nScale, nScale);
-			
-			bitmapdata = new BitmapData(width, height, true, 0);
-			bitmapdata.draw(bmpSrc, matrix, null, null, null, true);
-			
-			return new Bitmap(bitmapdata, 'auto', true);
+			scaleMatrix.scale(scale, scale);
+			scaleBmpd.draw(pBitmap, scaleMatrix);
+		 
+			if (scaledBitmap.width > pWidth || scaledBitmap.height > pHeight) {
+				var cropMatrix:Matrix = new Matrix();
+				var cropArea:Rectangle = new Rectangle(0, 0, pWidth, pHeight);
+				var croppedBmpd:BitmapData = new BitmapData(pWidth, pHeight);
+				var croppedBitmap:Bitmap = new Bitmap(croppedBmpd, PixelSnapping.ALWAYS, true);
+				
+				if (pCenter) {
+					var offsetX:Number = Math.abs((pWidth - scaleBmpd.width) / 2);
+					var offsetY:Number = Math.abs((pHeight - scaleBmpd.height) / 2);
+					
+					cropMatrix.translate(-offsetX, -offsetY);
+				}
+				
+				croppedBmpd.draw(scaledBitmap, cropMatrix, null, null, cropArea, true);
+				
+				return croppedBitmap;
+			} else {
+				return scaledBitmap;
+			}
 		}
 		
 		/**
@@ -97,9 +111,9 @@ package artcustomer.framework.utils.tools {
 			width = bmpSrc.width * factor;
 			height = bmpSrc.height * factor;
 			
-			nScaleX = (width / bmpSrc.width) * 100;
-			nScaleY = (height / bmpSrc.height) * 100;
-			nScale = Math.max(nScaleY, nScaleX) / 100;
+			nScaleX = (width / bmpSrc.width);
+			nScaleY = (height / bmpSrc.height);
+			nScale = Math.max(nScaleY, nScaleX);
 			
 			matrix.scale(nScale, nScale);
 			
@@ -120,24 +134,17 @@ package artcustomer.framework.utils.tools {
 			if (!bmpSrc) return null;
 			
 			var thumbSize:int;
-			var height:int;
-			var nScaleX:Number;
-			var nScaleY:Number;
-			var nScale:Number;
 			var matrix:Matrix = new Matrix();
 			var bitmapdata:BitmapData;
 			var square:int = Math.min(bmpSrc.width, bmpSrc.height);
-			var factor:Number = Math.min(1, (size / square));
+			var scale:Number = Math.min(1, (size / square));
 			
 			bmpSrc.smoothing = true;
 			
-			thumbSize = square * factor;
+			thumbSize = square * scale;
 			
-			nScaleX = (thumbSize / bmpSrc.width) * 100;
-			nScaleY = (thumbSize / bmpSrc.height) * 100;
-			nScale = Math.max(nScaleY, nScaleX) / 100;
-			
-			matrix.scale(nScale, nScale);
+			matrix.translate(-((bmpSrc.width - square) >> 1), -((bmpSrc.height - square) >> 1));
+			matrix.scale(scale, scale);
 			
 			bitmapdata = new BitmapData(thumbSize, thumbSize, true, 0);
 			bitmapdata.draw(bmpSrc, matrix, null, null, null, true);
@@ -159,6 +166,18 @@ package artcustomer.framework.utils.tools {
 			matrix.scale(scale, scale);
 			
 			bmpSrc.transform.matrix = matrix;
+		}
+		
+		/**
+		 * Clone Bitmap.
+		 * 
+		 * @param	bmpSrc
+		 * @return
+		 */
+		public static function clone(bmpSrc:Bitmap):Bitmap {
+			if (!bmpSrc) return null;
+			
+			return new Bitmap(bmpSrc.bitmapData.clone(), 'auto', true);
 		}
 	}
 }

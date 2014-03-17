@@ -6,6 +6,7 @@
  */
 
 package artcustomer.framework.utils.tools {
+	import flash.display.Stage;
 	import flash.system.Capabilities;
 	
 	
@@ -17,6 +18,11 @@ package artcustomer.framework.utils.tools {
 	public class MobileTools {
 		private static const ANDROID:String = 'AND';
 		private static const IOS:String = 'IOS';
+		
+		public static var tabletScreenMinimumInches:Number = 5;
+		public static var screenPixelWidth:Number = NaN;
+		public static var screenPixelHeight:Number = NaN;
+		public static var dpi:int = Capabilities.screenDPI;
 		
 		
 		/**
@@ -44,6 +50,30 @@ package artcustomer.framework.utils.tools {
 		 */
 		public static function isMobile():Boolean {
 			return (isAndroid() || isIOS());
+		}
+		
+		
+		/**
+		 * Determines if this device is probably a tablet.
+		 * 
+		 * @param	stage
+		 * @return
+		 */
+		public static function isTablet(stage:Stage):Boolean {
+			const screenWidth:Number = isNaN(screenPixelWidth) ? stage.fullScreenWidth : screenPixelWidth;
+			const screenHeight:Number = isNaN(screenPixelHeight) ? stage.fullScreenHeight : screenPixelHeight;
+			
+			return (Math.max(screenWidth, screenHeight) / dpi) >= tabletScreenMinimumInches;
+		}
+		
+		/**
+		 * Determines if this device is probably a phone.
+		 * 
+		 * @param	stage
+		 * @return
+		 */
+		public static function isPhone(stage:Stage):Boolean {
+			return !isTablet(stage);
 		}
 	}
 }

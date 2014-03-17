@@ -23,7 +23,7 @@ package artcustomer.framework.context {
 	import artcustomer.framework.events.*;
 	import artcustomer.framework.errors.*;
 	import artcustomer.framework.utils.consts.*;
-	import artcustomer.framework.utils.tools.StageTools;
+	import artcustomer.framework.utils.tools.*;
 	
 	[Event(name = "error", type = "artcustomer.framework.events.ContextErrorEvent")]
 	[Event(name = "frameworkError", type = "artcustomer.framework.events.ContextErrorEvent")]
@@ -70,6 +70,7 @@ package artcustomer.framework.context {
 		private var _exitOnUnfocus:Boolean;
 		
 		protected var _isHD:Boolean;
+		protected var _isTablet:Boolean;
 		protected var _isDesktop:Boolean;
 		
 		
@@ -102,6 +103,7 @@ package artcustomer.framework.context {
 		private function init():void {
 			_isLogoShow = false;
 			_isDesktop = Capabilities.playerType == 'Desktop' ? true : false;
+			_isTablet = MobileTools.isTablet(this.stageReference);
 		}
 		
 		//---------------------------------------------------------------------
@@ -391,7 +393,6 @@ package artcustomer.framework.context {
 				
 				_contextWidth = width;
 				_contextHeight = height;
-				
 				_scaleFactor = customScaleFactor > 0 ? customScaleFactor : StageTools.getScaleFactor(_contextWidth, _contextHeight, _scaleFactorConfiguration);
 			} else {
 				_scaleFactor = 1;
@@ -493,6 +494,7 @@ package artcustomer.framework.context {
 			_isFocusOnStage = false;
 			_exitOnUnfocus = false;
 			_isHD = false;
+			_isTablet = false;
 			_isDesktop = false;
 			
 			super.destroy();
@@ -827,6 +829,13 @@ package artcustomer.framework.context {
 		 */
 		public function get isDesktop():Boolean {
 			return _isDesktop;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get isTablet():Boolean {
+			return _isTablet;
 		}
 	}
 }

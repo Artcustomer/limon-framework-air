@@ -17,5 +17,6 @@ package artcustomer.framework.utils.consts {
 		
 		
 		public static const DEFAULT_NAME:String = 'Application';
+		public static const DEFAULT_VERSION:String = '0.1.0.0';
 	}
 }

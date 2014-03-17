@@ -12,6 +12,7 @@ package artcustomer.framework.context {
 	import flash.system.System;
 	import flash.system.Security;
 	import flash.desktop.NativeApplication;
+	import flash.net.URLVariables;
 	import flash.utils.getQualifiedClassName;
 	import flash.filesystem.File;
 	
@@ -28,6 +29,7 @@ package artcustomer.framework.context {
 		private static const FULL_CLASS_NAME:String = 'artcustomer.framework.context::ServiceContext';
 		
 		private var _name:String;
+		private var _version:String;
 		private var _mode:String;
 		private var _device:String;
 		private var _rootFolder:String;
@@ -49,6 +51,8 @@ package artcustomer.framework.context {
 		private var _defaultLanguage:String;
 		private var _appLanguage:String;
 		private var _manufacturer:String;
+		private var _screenDPI:int;
+		private var _screenInches:Number;
 		
 		private var _isPlayerPaused:Boolean;
 		private var _createRootPath:Boolean;
@@ -60,6 +64,14 @@ package artcustomer.framework.context {
 		 * Constructor
 		 */
 		public function ServiceContext() {
+			var w:Number = Capabilities.screenResolutionX;
+			var h:Number = Capabilities.screenResolutionY;
+			var dpi:Number = Capabilities.screenDPI;
+			var urlVariables:URLVariables = new URLVariables();
+			urlVariables.decode(Capabilities.serverString);
+			
+			_screenInches = Math.round(Math.sqrt(Math.pow(w / dpi, 2) + Math.pow(h / dpi, 2)) * 100) / 100;
+			_screenDPI = parseInt(urlVariables.DP, 10);
 			_device = DeviceTypes.CROSS_DEVICE;
 			_runtime = RuntimePlatform.AIR_RUNTIME;
 			_runtimeVersion = NativeApplication.nativeApplication.runtimeVersion;
@@ -71,6 +83,7 @@ package artcustomer.framework.context {
 			_defaultLanguage = Capabilities.language;
 			_appLanguage = ApplicationLanguages.FRENCH;
 			_name = ContextName.DEFAULT_NAME;
+			_version = ContextName.DEFAULT_VERSION;
 			_mode = ContextMode.RELEASE;
 			_rootFolder = '';
 			_assetsPath = '';
@@ -185,6 +198,7 @@ package artcustomer.framework.context {
 		 */
 		override public function destroy():void {
 			_name = null;
+			_version = null;
 			_mode = null;
 			_device = null;
 			_rootFolder = null;
@@ -207,6 +221,8 @@ package artcustomer.framework.context {
 			_createRootPath = false;
 			_testAssetsPath = false;
 			_isiOS = false;
+			_screenDPI = 0;
+			_screenInches = 0;
 			
 			super.destroy();
 		}
@@ -280,6 +296,20 @@ package artcustomer.framework.context {
 		 */
 		public function get name():String {
 			return _name;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set version(value:String):void {
+			_version = value;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get version():String {
+			return _version;
 		}
 		
 		/**
@@ -497,6 +527,20 @@ package artcustomer.framework.context {
 		 */
 		public function get manufacturer():String {
 			return _manufacturer;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get screenDPI():int {
+			return _screenDPI;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function get screenInches():Number {
+			return _screenInches;
 		}
 		
 		/**

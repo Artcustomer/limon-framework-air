@@ -117,5 +117,16 @@ package artcustomer.framework.utils.tools {
 		public static function randomAngle():Number {
 			return Math.random() * DEGREE360;
         }
+		
+		/**
+		 * Compute percent position.
+		 * 
+		 * @param	pBaseNumber
+		 * @param	pPercent
+		 * @return
+		 */
+		public static function getPercentPosition(pBaseNumber:Number, pPercent:Number):Number {
+			return (_baseNumber * _percent) / 100;;
+		}
 	}
 }

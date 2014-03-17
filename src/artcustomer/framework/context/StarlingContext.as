@@ -14,6 +14,7 @@ package artcustomer.framework.context {
 	import flash.utils.getQualifiedClassName;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
+	import flash.display3D.Context3DProfile;
 	
 	import artcustomer.framework.context.*;
 	import artcustomer.framework.core.*;
@@ -40,6 +41,8 @@ package artcustomer.framework.context {
 	 */
 	public class StarlingContext extends BaseContext {
 		private static const FULL_CLASS_NAME:String = 'artcustomer.framework.context::StarlingContext';
+		private static const HD_MIN_SIZE:int = 480;
+		private static const EXTENDED_MIN_SIZE:int = 1536;
 		
 		private var _starling:Starling;
 		private var _starlingStage:Stage;
@@ -62,6 +65,7 @@ package artcustomer.framework.context {
 			
 			if (getQualifiedClassName(this) == FULL_CLASS_NAME) throw new IllegalError(IllegalError.E_CONTEXT_CONSTRUCTOR);
 			if (contextView) this.contextView = contextView;
+			_handleLostContext = true;
 		}
 		
 		//---------------------------------------------------------------------
@@ -225,6 +229,8 @@ package artcustomer.framework.context {
 			var viewPort:Rectangle;
 			var starlingStageWidth:int;
 			var starlingStageHeight:int;
+			var tmpWidth:int;
+			var profile:String = Context3DProfile.BASELINE;
 			
 			if (this.scaleToStage) {
 				//viewPort = _isDesktop == true ? new Rectangle(0, 0, this.stageReference.fullScreenWidth, this.stageReference.fullScreenHeight) : new Rectangle(0, 0, this.stageReference.stageWidth, this.stageReference.stageHeight);
@@ -237,25 +243,34 @@ package artcustomer.framework.context {
 				starlingStageHeight = this.contextHeight;
 			}
 			
+			// TODO : Check iOS device ?
+			/*if (this.isiOS) {
+				tmpWidth = Math.min(viewPort.width, viewPort.height);
+				if (tmpWidth >= EXTENDED_MIN_SIZE) profile = Context3DProfile.BASELINE_EXTENDED;
+			}*/
+			
+			tmpWidth = Math.min(viewPort.width, viewPort.height);
+			if (tmpWidth >= EXTENDED_MIN_SIZE) profile = Context3DProfile.BASELINE_EXTENDED;
+			
 			try {
 				Starling.multitouchEnabled = true;
 				
-				//this.handleLostContext = !this.isiOS;
-				this.handleLostContext = true;
+				Starling.handleLostContext = _handleLostContext;
 				
-				_starling = new Starling(StarlingRootClass, this.stageReference, viewPort);
+				_starling = new Starling(StarlingRootClass, this.stageReference, viewPort, null, 'auto', profile);
 				_starling.addEventListener(Event.ROOT_CREATED, handleStarling);
 				_starling.addEventListener(Event.CONTEXT3D_CREATE, handleStarling);
 				_starling.stage.addEventListener(ResizeEvent.RESIZE, handleStarlingResize);
+				_starling.simulateMultitouch = false;
 				_starling.enableErrorChecking = false;
-				_starling.antiAliasing = 1;
+				_starling.antiAliasing = 4;
 				
 				_starling.stage.stageWidth = starlingStageWidth;
 				_starling.stage.stageHeight = starlingStageHeight;
 				
 				_starlingStage = _starling.stage;
 				
-				this._isHD = _starling.viewPort.width > 480;
+				this._isHD = _starling.viewPort.width > HD_MIN_SIZE;
 			} catch (er:Error) {
 				throw new StarlingError(er.message);
 			}
@@ -527,26 +542,36 @@ package artcustomer.framework.context {
 		 * 
 		 * @return
 		 */
-		public function debug():String {
+		override public function debug():String {
 			var t:String = '';
 			var a:Array;
 			var o:Object;
 			
 			if (!this.isContextSetup) return "Can't get debug information ! Setup method don't called !";
 			
-			t += '[[ ' + this.name + ' DEBUG CONTEXT ]]';
+			t += '[[ ' + this.name + ' v. ' + this.version + ' DEBUG CONTEXT ]]';
 			t += '\n';
-			t += 'FullScreenWidth : ' + this.stageReference.fullScreenWidth;
+			t += 'Stage FullScreenWidth : ' + this.stageReference.fullScreenWidth;
 			t += '\n';
-			t += 'FullScreenHeight : ' + this.stageReference.fullScreenHeight;
+			t += 'Stage FullScreenHeight : ' + this.stageReference.fullScreenHeight;
 			t += '\n';
-			t += 'Width : ' + this.contextWidth;
+			t += 'Context Width : ' + this.contextWidth;
 			t += '\n';
-			t += 'Height : ' + this.contextHeight;
+			t += 'Context Height : ' + this.contextHeight;
+			t += '\n';
+			t += 'Starling Stage Width : ' + this.stageWidth;
+			t += '\n';
+			t += 'Starling Stage Height : ' + this.stageHeight;
+			t += '\n';
+			t += 'DPI : ' + this.screenDPI + ' - ' + Capabilities.screenDPI;
+			t += '\n';
+			t += 'Screen inches : ' + this.screenInches;
 			t += '\n';
 			t += 'ScaleToStage : ' + this.scaleToStage;
 			t += '\n';
 			t += 'ScaleFactor : ' + this.scaleFactor;
+			t += '\n';
+			t += 'Tablet : ' + _isTablet;
 			t += '\n';
 			t += 'Mode : ' + this.mode;
 			t += '\n';
@@ -575,8 +600,24 @@ package artcustomer.framework.context {
 			}
 			
 			t += 'RenderEngine : ' + this.renderEngine.state;
+			t += '\n';
+			t += '[[ END DEBUG CONTEXT ]]';
 			
 			return t;
+		}
+		
+		/**
+		 * Show Starling stats.
+		 */
+		public function showStats():void {
+			this.starling.showStats = true;
+		}
+		
+		/**
+		 * Hide Starling stats.
+		 */
+		public function hideStats():void {
+			this.starling.showStats = false;
 		}
 		
 		/**
@@ -641,6 +682,20 @@ package artcustomer.framework.context {
 			_handleLostContext = false;
 		}
 		
+		/**
+		 * Start Starling.
+		 */
+		override public function startExternalProcessing():void {
+			if (_starling) _starling.start();
+		}
+		
+		/**
+		 * Stop Starling.
+		 */
+		override public function stopExternalProcessing():void {
+			if (_starling) _starling.stop();
+		}
+		
 		
 		/**
 		 * @private
@@ -665,13 +720,10 @@ package artcustomer.framework.context {
 		
 		/**
 		 * @private
+		 * Set it BEFORE Starling creation, define in setup() method !
 		 */
 		public function set handleLostContext(value:Boolean):void {
-			if (value != _handleLostContext) {
-				_handleLostContext = value;
-				
-				Starling.handleLostContext = _handleLostContext;
-			}
+			_handleLostContext = value;
 		}
 		
 		/**

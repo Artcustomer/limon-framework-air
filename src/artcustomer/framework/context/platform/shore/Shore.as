@@ -9,6 +9,7 @@ package artcustomer.framework.context.platform.shore {
 	import flash.utils.Dictionary;
 	
 	import artcustomer.framework.base.IDestroyable;
+	import artcustomer.framework.errors.IllegalError;
 	
 	
 	/**
@@ -16,7 +17,7 @@ package artcustomer.framework.context.platform.shore {
 	 * 
 	 * @author David Massenot
 	 */
-	public class Shore extends Object implements IDestroyable {
+	public class Shore implements IDestroyable {
 		private static var __instance:Shore;
 		private static var __allowInstantiation:Boolean;
 		
@@ -29,6 +30,12 @@ package artcustomer.framework.context.platform.shore {
 		 * Constructor
 		 */
 		public function Shore() {
+			if (!__allowInstantiation) {
+				throw new IllegalError(IllegalError.E_SINGLETON_CLASS);
+				
+				return;
+			}
+			
 			setupDictionary();
 		}
 		
@@ -75,9 +82,7 @@ package artcustomer.framework.context.platform.shore {
 				
 				return true;
 			} else {
-				if (updateIfExists) {
-					_repository[key] = value;
-				}
+				if (updateIfExists) _repository[key] = value;
 			}
 			
 			return false;

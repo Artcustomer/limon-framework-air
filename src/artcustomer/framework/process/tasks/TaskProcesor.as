@@ -14,10 +14,11 @@ package artcustomer.framework.process.tasks {
 	import artcustomer.framework.process.tasks.events.*;
 	import artcustomer.framework.process.tasks.task.AbstractTask;
 	
-	[Event(name = "onStartProcesing", type = "artcustomer.framework.tasks.events.TaskProcesorEvent")]
-	[Event(name = "onProgressProcesing", type = "artcustomer.framework.tasks.events.TaskProcesorEvent")]
-	[Event(name = "onEndProcesing", type = "artcustomer.framework.tasks.events.TaskProcesorEvent")]
-	[Event(name = "onErrorProcesing", type = "artcustomer.framework.tasks.events.TaskProcesorEvent")]
+	[Event(name = "onStartProcesing", type = "artcustomer.framework.process.tasks.events.TaskProcesorEvent")]
+	[Event(name = "onProgressProcesing", type = "artcustomer.framework.process.tasks.events.TaskProcesorEvent")]
+	[Event(name = "onEndProcesing", type = "artcustomer.framework.process.tasks.events.TaskProcesorEvent")]
+	[Event(name = "onErrorProcesing", type = "artcustomer.framework.process.tasks.events.TaskProcesorEvent")]
+	[Event(name = "onProgressTask", type = "artcustomer.framework.process.tasks.events.TaskProcesorEvent")]
 	
 	
 	/**
@@ -148,11 +149,12 @@ package artcustomer.framework.process.tasks {
 		
 		
 		/**
-		 * Add Task in stack.
+		 * Add Task in processor.
 		 * 
 		 * @param	taskClass : Must extends AbstractTask !
+		 * @param	data (optional)
 		 */
-		public function addTask(taskClass:Class):void {
+		public function addTask(taskClass:Class, data:Object = null):void {
 			if (!taskClass) throw new IllegalError(IllegalError.E_TASK_ADD);
 			
 			var task:AbstractTask;
@@ -160,6 +162,7 @@ package artcustomer.framework.process.tasks {
 			try {
 				task = new taskClass();
 				task.index = _stack.length;
+				if (data) task.data = data;
 				
 				_stack.push(task);
 			} catch (er:Error) {
@@ -176,9 +179,7 @@ package artcustomer.framework.process.tasks {
 		public function getTaskAt(index:int):AbstractTask {
 			var task:AbstractTask;
 			
-			if (index >= 0 && index < _numTasks) {
-				task = _stack[index];
-			}
+			if (index >= 0 && index < _numTasks) task = _stack[index];
 			
 			return task;
 		}
@@ -207,7 +208,6 @@ package artcustomer.framework.process.tasks {
 			
 			if (!_isProcesing) {
 				_isProcesing = true;
-				
 				_currentTaskIndex = 0;
 				_numTasks = _stack.length;
 				

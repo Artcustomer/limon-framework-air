@@ -338,8 +338,9 @@ package artcustomer.framework.loaders.assets {
 		 * @param	name : Name (id)
 		 * @param	group : Useful to group some assets
 		 * @param	scale
+		 * @param	lang
 		 */
-		public function queueAsset(source:String, name:String, group:String = 'assets', scale:Number = 0):void {
+		public function queueAsset(source:String, name:String, group:String = 'assets', scale:Number = 0, lang:String = null):void {
 			if (_onLoad) throw new AssetsLoaderError(AssetsLoaderError.E_ASSETSLOADER_ONLOAD);
 			
 			var loadableAsset:AbstractLoadableAsset;
@@ -354,6 +355,7 @@ package artcustomer.framework.loaders.assets {
 					loadableAsset.name = name;
 					loadableAsset.group = group;
 					loadableAsset.scale = scale;
+					loadableAsset.lang = lang;
 					
 					_queue.push(loadableAsset);
 				} else {

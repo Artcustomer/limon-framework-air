@@ -28,10 +28,12 @@ package artcustomer.framework.process.tasks.task {
 		private static const FULL_CLASS_NAME:String = 'artcustomer.framework.process.tasks.task::AbstractTask';
 		
 		protected var _description:String;
+		protected var _data:Object;
 		
 		private var _index:int;
 		
 		private var _allowSetIndex:Boolean;
+		private var _allowSetData:Boolean;
 		
 		
 		/**
@@ -41,6 +43,7 @@ package artcustomer.framework.process.tasks.task {
 			if (getQualifiedClassName(this) == FULL_CLASS_NAME) throw new IllegalError(IllegalError.E_ABSTRACT_CLASS);
 			
 			_allowSetIndex = true;
+			_allowSetData = true;
 		}
 		
 		
@@ -73,6 +76,7 @@ package artcustomer.framework.process.tasks.task {
 		 */
 		public function destroy():void {
 			_index = 0;
+			_data = null;
 			_description = null;
 		}
 		
@@ -80,10 +84,16 @@ package artcustomer.framework.process.tasks.task {
 		/**
 		 * @private
 		 */
+		public function get index():int {
+			return _index;
+		}
+		
+		/**
+		 * @private
+		 */
 		public function set index(value:int):void {
 			if (_allowSetIndex) {
 				_allowSetIndex = false;
-				
 				_index = value;
 			}
 		}
@@ -91,8 +101,11 @@ package artcustomer.framework.process.tasks.task {
 		/**
 		 * @private
 		 */
-		public function get index():int {
-			return _index;
+		public function set data(value:Object):void {
+			if (_allowSetData) {
+				_allowSetData = false;
+				_data = value;
+			}
 		}
 		
 		/**

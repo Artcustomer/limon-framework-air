@@ -139,6 +139,7 @@ package artcustomer.framework.loaders.assets.data {
 			var j:int;
 			var fileLength:int = _files.length;
 			var typeLength:int;
+			var assetClass:Class;
 			
 			for (i ; i < fileLength ; ++i) {
 				resourceFile = _files[i];
@@ -147,7 +148,12 @@ package artcustomer.framework.loaders.assets.data {
 				
 				for (j ; j < typeLength ; ++j) {
 					resourceType = resourceFile.extensions[j];
-					if (extension == resourceType.extension) return new resourceFile.definition();
+					
+					if (extension == resourceType.extension) {
+						assetClass = resourceFile.definition;
+						
+						return new assetClass();
+					}
 				}
 			}
 			

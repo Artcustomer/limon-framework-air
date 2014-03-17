@@ -11,9 +11,10 @@ package artcustomer.framework.utils.display.starling.graphics {
 	import flash.display.BitmapData;
 	import flash.display.CapsStyle;
 	import flash.geom.Matrix;
+	import flash.filters.DropShadowFilter;
 	
-	import starling.display.Image;
-	import starling.display.Quad;
+	import starling.display.*;
+	import starling.textures.Texture;
 	
 	
 	/**
@@ -23,6 +24,28 @@ package artcustomer.framework.utils.display.starling.graphics {
 	 */
 	public class StarlingGraphicsTools {
 		
+		
+		/**
+		 * Draw rectangle.
+		 * 
+		 * @param	radius
+		 * @param	color
+		 * @param	scale
+		 * @return
+		 */
+		public static function drawRect(width:int, height:int, color:uint, scale:Number = 1):Texture {
+			var bmpData:BitmapData;
+			var shape:Shape = new Shape();
+			
+			shape.graphics.beginFill(color);
+			shape.graphics.drawRect(0, 0, width * scale, height * scale);
+			shape.graphics.endFill();
+			
+			bmpData = new BitmapData(width * scale, height * scale, true, 0);
+			bmpData.draw(shape, new Matrix());
+			
+			return Texture.fromBitmapData(bmpData, true, false, scale);
+		}
 		
 		/**
 		 * Draw line.
@@ -53,8 +76,7 @@ package artcustomer.framework.utils.display.starling.graphics {
 		 * @param	scale
 		 * @return
 		 */
-		public static function drawCircle(radius:int, color:uint, scale:Number = 1):Image {
-			var bmp:Bitmap;
+		public static function drawCircle(radius:int, color:uint, scale:Number = 1):Texture {
 			var bmpData:BitmapData;
 			var shape:Shape = new Shape();
 			
@@ -65,9 +87,7 @@ package artcustomer.framework.utils.display.starling.graphics {
 			bmpData = new BitmapData(radius * 2, radius * 2, true, 0);
 			bmpData.draw(shape, new Matrix());
 			
-			bmp = new Bitmap(bmpData, 'auto', true);
-			
-			return Image.fromBitmap(bmp, true, scale);
+			return Texture.fromBitmapData(bmpData, true, false, scale);
 		}
 		
 		/**
@@ -77,11 +97,11 @@ package artcustomer.framework.utils.display.starling.graphics {
 		 * @param	height
 		 * @param	radius
 		 * @param	color
+		 * @param	alpha
 		 * @param	scale
 		 * @return
 		 */
-		public static function drawRoundRect(width:int, height:int, radius:Number, color:uint, scale:Number = 1, alpha:Number = 1):Image {
-			var bmp:Bitmap;
+		public static function drawRoundRect(width:int, height:int, radius:Number, color:uint, scale:Number = 1, alpha:Number = 1):Texture {
 			var bmpData:BitmapData;
 			var shape:Shape = new Shape();
 			
@@ -92,9 +112,35 @@ package artcustomer.framework.utils.display.starling.graphics {
 			bmpData = new BitmapData(width * scale, height * scale, true, 0);
 			bmpData.draw(shape, new Matrix(), null, null, null, true);
 			
-			bmp = new Bitmap(bmpData, 'auto', true);
+			return Texture.fromBitmapData(bmpData, true, false, scale);
+		}
+		
+		/**
+		 * Draw rounded rectangle with inner shadow
+		 * 
+		 * @param	width
+		 * @param	height
+		 * @param	radius
+		 * @param	color
+		 * @param	scale
+		 * @param	alpha
+		 * @param	shadowColor
+		 * @return
+		 */
+		public static function drawRoundRectInnerShadow(width:int, height:int, radius:Number, color:uint, scale:Number = 1, alpha:Number = 1, shadowColor:uint = 0x000000):Texture {
+			var bmpData:BitmapData;
+			var shape:Shape = new Shape();
+			var shadow:DropShadowFilter = new DropShadowFilter(4, 45, shadowColor, 1, 4, 4, 1, 1, true);
 			
-			return Image.fromBitmap(bmp, true, scale);
+			shape.graphics.beginFill(color, alpha);
+			shape.graphics.drawRoundRect(0, 0, width * scale, height * scale, radius * scale, radius * scale);
+			shape.graphics.endFill();
+			shape.filters = [shadow];
+			
+			bmpData = new BitmapData(width * scale, (height + 0) * scale, true, 0);
+			bmpData.draw(shape, new Matrix(), null, null, null, true);
+			
+			return Texture.fromBitmapData(bmpData, true, false, scale);
 		}
 		
 		/**
@@ -104,26 +150,51 @@ package artcustomer.framework.utils.display.starling.graphics {
 		 * @param	height
 		 * @param	thickness
 		 * @param	radius
-		 * @param	color
+		 * @param	fillColor
+		 * @param	lineColor
+		 * @param	fillAlpha
 		 * @param	scale
 		 * @return
 		 */
-		public static function drawLineRoundRect(width:int, height:int, thickness:int, radius:Number, color:uint, scale:Number = 1):Image {
-			var bmp:Bitmap;
+		public static function drawLineRoundRect(width:int, height:int, thickness:int, radius:Number, fillColor:uint, lineColor:uint, fillAlpha:Number = 1, scale:Number = 1):Texture {
 			var bmpData:BitmapData;
 			var shape:Shape = new Shape();
 			
-			shape.graphics.beginFill(color, 0);
-			shape.graphics.lineStyle(thickness, color, 1, true, 'normal', CapsStyle.ROUND, null, 10);
+			shape.graphics.beginFill(fillColor, fillAlpha);
+			shape.graphics.lineStyle(thickness, lineColor, 1, true, 'normal', CapsStyle.ROUND, null, 10);
 			shape.graphics.drawRoundRect(0, 0, width * scale, height * scale, radius * scale, radius * scale);
 			shape.graphics.endFill();
 			
 			bmpData = new BitmapData((width + thickness) * scale, (height + thickness) * scale, true, 0);
 			bmpData.draw(shape, new Matrix(), null, null, null, true);
 			
-			bmp = new Bitmap(bmpData, 'auto', true);
+			return Texture.fromBitmapData(bmpData, true, false, scale);
+		}
+		
+		/**
+		 * Draw shadow.
+		 * 
+		 * @param	width
+		 * @param	height
+		 * @param	color
+		 * @param	alpha
+		 * @param	scale
+		 * @return
+		 */
+		public static function drawShadow(width:int, height:int, color:uint = 0x000000, alpha:Number = 1, scale:Number = 1):Texture {
+			var bmpData:BitmapData;
+			var shape:Shape = new Shape();
+			var shadow:DropShadowFilter = new DropShadowFilter(0, 0, color, alpha, 4, 4, 1, 1, false, false, true);
 			
-			return Image.fromBitmap(bmp, true, scale);
+			shape.graphics.beginFill(0x000000, 1);
+			shape.graphics.drawRect(0, 0, width * scale, 3);
+			shape.graphics.endFill();
+			shape.filters = [shadow];
+			
+			bmpData = new BitmapData(width * scale, height * scale, true, 0);
+			bmpData.draw(shape, new Matrix(), null, null, null, true);
+			
+			return Texture.fromBitmapData(bmpData, true, false, scale);
 		}
 	}
 }

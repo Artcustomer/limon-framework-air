@@ -13,6 +13,7 @@ package artcustomer.framework.utils.tools {
 	import flash.filesystem.FileMode;
 	import flash.media.MediaPromise;
 	import flash.utils.ByteArray;
+	import flash.net.FileFilter;
 	
 	
 	/**
@@ -68,6 +69,19 @@ package artcustomer.framework.utils.tools {
 		}
 		
 		/**
+		 * Escape lang and rename file.
+		 * 
+		 * @param	file
+		 * @param	lang
+		 * @return
+		 */
+		public static function escapeLangFromFileName(file:String, lang:String):String {
+			if (file.indexOf('{lang}') != -1) file = file.split('{lang}').join(lang);
+			
+			return file;
+		}
+		
+		/**
 		 * Convert bytes to String format.
 		 * 
 		 * @param	bytes
@@ -76,6 +90,21 @@ package artcustomer.framework.utils.tools {
 		public static function bytesToString(bytes:Number):String {
 			var index:uint = Math.floor(Math.log(bytes) / Math.log(1024));
 			return (bytes / Math.pow(1024, index)).toFixed(2) + ' ' + SIZE_LEVELS[index];
+		}
+		
+		
+		/**
+		 * @private
+		 */
+		public static function get imagesFilter():FileFilter {
+			return new FileFilter("Images", "*.jpg; *.gif; *.png");
+		}
+		
+		/**
+		 * @private
+		 */
+		public static function get docsFilter():FileFilter {
+			return new FileFilter("Documents", "*.pdf; *.doc; *.txt");
 		}
 	}
 }
