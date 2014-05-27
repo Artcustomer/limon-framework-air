@@ -94,6 +94,13 @@ package artcustomer.framework.engines.component {
 		
 		
 		/**
+		 * Manual initializer. Override it !
+		 */
+		public function init():void {
+			
+		}
+		
+		/**
 		 * Entry point.
 		 */
 		public function build():void {

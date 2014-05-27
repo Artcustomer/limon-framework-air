@@ -109,7 +109,11 @@ package artcustomer.framework.utils.tools {
 						scaleFactor = 2;
 					} else {
 						if (minValue <= 1536) {
-							scaleFactor = 3;
+							if (dpi < 400) {
+								scaleFactor = 3;
+							} else {
+								scaleFactor = 4;
+							}
 						} else {
 							scaleFactor = 4;
 						}

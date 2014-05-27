@@ -111,22 +111,10 @@ package artcustomer.framework.context {
 		private function setManufacturer():void {
 			var manufacturer:String = Capabilities.manufacturer;
 			
-			if (manufacturer.indexOf(DevicesManufacturers.WINDOWS) != -1) {
-				_manufacturer = DevicesManufacturers.WINDOWS;
-			}
-			
-			if (manufacturer.indexOf(DevicesManufacturers.MAC) != -1) {
-				_manufacturer = DevicesManufacturers.MAC;
-			}
-			
-			if (manufacturer.indexOf(DevicesManufacturers.LINUX) != -1) {
-				_manufacturer = DevicesManufacturers.LINUX;
-			}
-			
-			if (manufacturer.indexOf(DevicesManufacturers.ANDROID) != -1) {
-				_manufacturer = DevicesManufacturers.ANDROID;
-			}
-			
+			if (manufacturer.indexOf(DevicesManufacturers.WINDOWS) != -1) _manufacturer = DevicesManufacturers.WINDOWS;
+			if (manufacturer.indexOf(DevicesManufacturers.MAC) != -1) _manufacturer = DevicesManufacturers.MAC;
+			if (manufacturer.indexOf(DevicesManufacturers.LINUX) != -1) _manufacturer = DevicesManufacturers.LINUX;
+			if (manufacturer.indexOf(DevicesManufacturers.ANDROID) != -1) _manufacturer = DevicesManufacturers.ANDROID;
 			if (manufacturer.indexOf(DevicesManufacturers.IOS) != -1) {
 				_manufacturer = DevicesManufacturers.IOS;
 				_isiOS = true;

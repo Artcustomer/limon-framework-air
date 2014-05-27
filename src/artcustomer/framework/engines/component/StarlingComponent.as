@@ -31,7 +31,7 @@ package artcustomer.framework.engines.component {
 	 * 
 	 * @author David Massenot
 	 */
-	public class StarlingComponent extends ViewMediator implements IComponent {
+	public class StarlingComponent extends ViewMediator {
 		private static const FULL_CLASS_NAME:String = 'artcustomer.framework.engines.component::StarlingComponent';
 		
 		private var _viewPort:Sprite;

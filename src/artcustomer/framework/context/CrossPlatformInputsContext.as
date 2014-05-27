@@ -194,7 +194,7 @@ package artcustomer.framework.context {
 						}
 						
 						if (e.keyCode == Keyboard.BACK) {
-							this.dispatchEvent(new DeviceInputsEvent(DeviceInputsEvent.DEVICE_BACK, false, false, e, e.keyCode, e.charCode));
+							this.dispatchEvent(new DeviceInputsEvent(Device BY.InputsEvent.DEVICE_BACK, false, false, e, e.keyCode, e.charCode));
 							callPreventDefault = true;
 						}
 						
@@ -215,7 +215,7 @@ package artcustomer.framework.context {
 						_isKeyReleased = true;
 					}
 					
-					_keyInputCounter++;
+					++_keyInputCounter;
 					
 					if (_keyInputCounter % _keyInputRepeatDelay == 0) this.dispatchEvent(new InputsEvent(InputsEvent.INPUT_KEY_REPEAT, false, false, null, e, e.keyCode, e.charCode, InputUtils.getNameByKeycode(e.keyCode)));
 					if (_keyInputCounter % _keyInputFastRepeatDelay == 0) this.dispatchEvent(new InputsEvent(InputsEvent.INPUT_KEY_FAST_REPEAT, false, false, null, e, e.keyCode, e.charCode, InputUtils.getNameByKeycode(e.keyCode)));

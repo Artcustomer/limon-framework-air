@@ -20,9 +20,9 @@ package artcustomer.framework {
 		public static const RUNTIME_VERSION:String = '3.9.0.960';
 		public static const FLASH_VERSION:String = '11.9.900.110';
 		public static const CODE:String = 'Limon Framework AIR';
-		public static const VERSION:String = '3.1.6.8';
+		public static const VERSION:String = '3.1.8.0';
 		public static const AUTHOR:String = 'David Massenot';
 		public static const ONLINE_DOCUMENTATION:String = 'http://framework.artcustomer.fr/';
-		public static const LAST_RELEASE_DATE:String = '17/03/2014';
+		public static const LAST_RELEASE_DATE:String = '02/05/2014';
 	}
 }

@@ -18,20 +18,21 @@ package artcustomer.framework.engines.component {
 	 * @author David Massenot
 	 */
 	public interface IComponent {
-		function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
-		function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void
-		function hasEventListener(type:String):Boolean
+		function init():void;
+		function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void;
+		function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void;
+		function hasEventListener(type:String):Boolean;
 		function dispatchEvent(e:Event):Boolean;
-		function dispatchCommand(event:Event, macroCommandID:String):void
-		function getViewByID(id:String):IView
-		function getViewByIndex(index:int):IView
-		function hasViewByID(id:String):Boolean
-		function hasViewByIndex(index:int):Boolean
-		function get id():String
-		function get index():int
-		function get context():IContext
-		function get model():IModel
-		function get command():ICommand
-		function get numViews():int
+		function dispatchCommand(event:Event, macroCommandID:String):void;
+		function getViewByID(id:String):IView;
+		function getViewByIndex(index:int):IView;
+		function hasViewByID(id:String):Boolean;
+		function hasViewByIndex(index:int):Boolean;
+		function get id():String;
+		function get index():int;
+		function get context():IContext;
+		function get model():IModel;
+		function get command():ICommand;
+		function get numViews():int;
 	}
 }

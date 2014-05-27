@@ -44,7 +44,7 @@ package artcustomer.framework.utils.display.starling.graphics {
 			bmpData = new BitmapData(width * scale, height * scale, true, 0);
 			bmpData.draw(shape, new Matrix());
 			
-			return Texture.fromBitmapData(bmpData, true, false, scale);
+			return Texture.fromBitmapData(bmpData, false, false, scale);
 		}
 		
 		/**
@@ -87,7 +87,7 @@ package artcustomer.framework.utils.display.starling.graphics {
 			bmpData = new BitmapData(radius * 2, radius * 2, true, 0);
 			bmpData.draw(shape, new Matrix());
 			
-			return Texture.fromBitmapData(bmpData, true, false, scale);
+			return Texture.fromBitmapData(bmpData, false, false, scale);
 		}
 		
 		/**
@@ -112,7 +112,7 @@ package artcustomer.framework.utils.display.starling.graphics {
 			bmpData = new BitmapData(width * scale, height * scale, true, 0);
 			bmpData.draw(shape, new Matrix(), null, null, null, true);
 			
-			return Texture.fromBitmapData(bmpData, true, false, scale);
+			return Texture.fromBitmapData(bmpData, false, false, scale);
 		}
 		
 		/**
@@ -140,7 +140,7 @@ package artcustomer.framework.utils.display.starling.graphics {
 			bmpData = new BitmapData(width * scale, (height + 0) * scale, true, 0);
 			bmpData.draw(shape, new Matrix(), null, null, null, true);
 			
-			return Texture.fromBitmapData(bmpData, true, false, scale);
+			return Texture.fromBitmapData(bmpData, false, false, scale);
 		}
 		
 		/**
@@ -168,7 +168,7 @@ package artcustomer.framework.utils.display.starling.graphics {
 			bmpData = new BitmapData((width + thickness) * scale, (height + thickness) * scale, true, 0);
 			bmpData.draw(shape, new Matrix(), null, null, null, true);
 			
-			return Texture.fromBitmapData(bmpData, true, false, scale);
+			return Texture.fromBitmapData(bmpData, false, false, scale);
 		}
 		
 		/**
@@ -194,7 +194,7 @@ package artcustomer.framework.utils.display.starling.graphics {
 			bmpData = new BitmapData(width * scale, height * scale, true, 0);
 			bmpData.draw(shape, new Matrix(), null, null, null, true);
 			
-			return Texture.fromBitmapData(bmpData, true, false, scale);
+			return Texture.fromBitmapData(bmpData, false, false, scale);
 		}
 	}
 }
